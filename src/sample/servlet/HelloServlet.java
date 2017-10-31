@@ -16,6 +16,7 @@ public class HelloServlet extends HttpServlet{
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		// Send data to the browser
 		ServletOutputStream out = response.getOutputStream();
 		out.println("<html>");
 		out.println("<head><title>Hello Servlet</title></head>");
