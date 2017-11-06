@@ -1,31 +1,35 @@
-package sample.servlet;
-
+package org.o7planning.tutorial.servlet;
+ 
 import java.io.IOException;
-
+ 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.WebInitParam;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
  
-public class InitParamServlet extends HttpServlet {
+// Bạn có thể cấu hình một hoặc nhiều 'mẫu của URL' (URL pattern)
+// có thể truy cập vào Servlet này.
+@WebServlet(urlPatterns = { "/annotationExample", "/annExample" }, initParams = {
+        @WebInitParam(name = "emailSupport1", value = "abc@example.com"),
+        @WebInitParam(name = "emailSupport2", value = "tom@example.com") })
+public class AnnotationExampleServlet extends HttpServlet {
  
     private static final long serialVersionUID = 1L;
  
     private String emailSupport1;
  
-    public InitParamServlet() {
+    public AnnotationExampleServlet() {
     }
  
-    // Phương thức này luôn luôn được gọi 1 lần
-    // ngay sau khi đối tượng Servlet được tạo ra.
+    // Phương thức này được gọi trước lần phục vụ đầu tiên của Servlet này.
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
  
-        // Lấy ra giá trị của tham số khởi tạo (initialization parameter) của Servlet.
-        // (Theo Cấu hình của Servlet này trong web.xml).
         this.emailSupport1 = config.getInitParameter("emailSupport1");
     }
  
@@ -33,8 +37,6 @@ public class InitParamServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
  
-        // Lấy ra giá trị của tham số khởi tạo (initialization parameter) theo một cách
-        // khác.
         String emailSupport2 = this.getServletConfig().getInitParameter("emailSupport2");
  
         ServletOutputStream out = response.getOutputStream();
@@ -43,7 +45,7 @@ public class InitParamServlet extends HttpServlet {
         out.println("<head><title>Init Param</title></head>");
  
         out.println("<body>");
-        out.println("<h3>Init Param</h3>");
+        out.println("<h3>Servlet with Annotation configuration</h3>");
         out.println("<p>emailSupport1 = " + this.emailSupport1 + "</p>");
         out.println("<p>emailSupport2 = " + emailSupport2 + "</p>");
         out.println("</body>");
